@@ -2,7 +2,6 @@ import socket
 import asyncio
 import sys
 
-
 async def port_scan(IP, starting_port, ending_port, task):
     print("TASK #", task, " STARTING")
     try:
@@ -30,10 +29,18 @@ async def main():
     print("Enter IP to scan ports:")
     IP = input()
     print(f"IP Address: {IP}")
+    #print("Enter how many ports to scan from 1 to X")
+    #ports = input()
+    #port_scan(IP, starting_port=)
     
+
     # ASYNC CONCURRENT
-    await task1 = asyncio.create_task(port_scan(IP, starting_port=1, ending_port=50, task=1))
-    await task2 = asyncio.create_task(port_scan(IP, starting_port=51, ending_port=100, task=2))
+    # await task1 = asyncio.create_task(port_scan(IP, starting_port=1, ending_port=50, task=1))
+    # await task2 = asyncio.create_task(port_scan(IP, starting_port=51, ending_port=100, task=2))
 
+    async with asyncio.TaskGroup() as task_group:
+        task_group.create_task(port_scan(IP, starting_port=1, ending_port=100, task=1))
+        task_group.create_task(port_scan(IP, starting_port=101, ending_port=200, task=2))
+        task_group.create_task(port_scan(IP, starting_port=201, ending_port=300, task=3))
+    
 asyncio.run(main())
-
