@@ -53,15 +53,30 @@ def main():
 
 
     # THREADING
-    t1 = threading.Thread(target=port_scan(IP, starting_port=1, ending_port=50, task=1))
-    t2 = threading.Thread(target=port_scan(IP, starting_port=51, ending_port=100, task=2))
+    # t1 = threading.Thread(target=port_scan(IP, starting_port=1, ending_port=50, task=1))
+    # t2 = threading.Thread(target=port_scan(IP, starting_port=51, ending_port=100, task=2))
 
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
+    # t1.start()
+    # t2.start()
+    # t1.join()
+    # t2.join()
 
-    print("THREADING DONE")
+    # print("THREADING DONE")
+
+    # THREAD POOL
+
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        executor.submit(port_scan, IP, 1, 500, 1)
+        executor.submit(port_scan, IP, 501, 1000, 2)
+        executor.submit(port_scan, IP, 1001, 1500, 3)
+        executor.submit(port_scan, IP, 1501, 2000, 4)
+        executor.submit(port_scan, IP, 2001, 2500, 5)
+        executor.submit(port_scan, IP, 2501, 3000, 6)
+        executor.submit(port_scan, IP, 3001, 3500, 7)
+        executor.submit(port_scan, IP, 3501, 4000, 8)
+        executor.submit(port_scan, IP, 4001, 4500, 9)
+        executor.submit(port_scan, IP, 4501, 5000, 10)
+
 
 if __name__ == "__main__":
     main()
