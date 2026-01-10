@@ -2,7 +2,11 @@ import socket
 import asyncio
 import sys
 
-async def port_scan(IP, starting_port, ending_port, task):
+import threading
+from concurrent.futures import ThreadPoolExecutor
+
+
+def port_scan(IP, starting_port, ending_port, task):
     print("TASK #", task, " STARTING")
     try:
         for port in range(starting_port, ending_port):
@@ -23,7 +27,7 @@ async def port_scan(IP, starting_port, ending_port, task):
         sys.exit()
 
 
-async def main():
+def main():
     print("*" * 50)
     print("PORT SCANNER WILL SCAN FROM 1 to 1000")
     print("Enter IP to scan ports:")
@@ -38,9 +42,26 @@ async def main():
     # await task1 = asyncio.create_task(port_scan(IP, starting_port=1, ending_port=50, task=1))
     # await task2 = asyncio.create_task(port_scan(IP, starting_port=51, ending_port=100, task=2))
 
-    async with asyncio.TaskGroup() as task_group:
-        task_group.create_task(port_scan(IP, starting_port=1, ending_port=100, task=1))
-        task_group.create_task(port_scan(IP, starting_port=101, ending_port=200, task=2))
-        task_group.create_task(port_scan(IP, starting_port=201, ending_port=300, task=3))
+    # async with asyncio.TaskGroup() as task_group:
+    #     task_group.create_task(port_scan(IP, starting_port=1, ending_port=100, task=1))
+    #     task_group.create_task(port_scan(IP, starting_port=101, ending_port=200, task=2))
+    #     task_group.create_task(port_scan(IP, starting_port=201, ending_port=300, task=3))
     
-asyncio.run(main())
+    # print("TASK GROUP DONE")
+
+# asyncio.run(main())
+
+
+    # THREADING
+    t1 = threading.Thread(target=port_scan(IP, starting_port=1, ending_port=50, task=1))
+    t2 = threading.Thread(target=port_scan(IP, starting_port=51, ending_port=100, task=2))
+
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+
+    print("THREADING DONE")
+
+if __name__ == "__main__":
+    main()
