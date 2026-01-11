@@ -3,10 +3,11 @@ import nmap
 nm = nmap.PortScanner()
 
 
-print("Enter IP to scan ports:")
+print("Enter IP to scan:")
 IP = input()
-
-options = "-sV -sC scan_results"
+print("Scan ports 1 to X:")
+ports = input()
+options = f"-sS -sV -p1-{ports} -sC scan_results"
 
 nm.scan(IP, arguments=options)
 
