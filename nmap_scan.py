@@ -3,11 +3,21 @@ from colorama import Fore, Style
 
 nm = nmap.PortScanner()
 
-print("Enter IP to scan:")
-IP = input()
-print("Scan ports 1 to X:")
-ports = input()
-options = f"-sV -sC -p1-{ports} scan_results"
+print(Fore.RED + "*"*85)
+print("WARNING: PORT SCANNING MAY VIOLATE ACCEPTABLE USE POLICIES ON NETWORKS YOU DON'T OWN")
+print("USE ONLY ON NETWORKS YOU HAVE EXPLICIT PERMISSION TO SCAN")
+print("*"*85+ Style.RESET_ALL)
+
+IP = input("Enter IP to scan: ")
+ports = input("Select option to scan ports: \n1 - Top Ports \n2 - 1 to 1024 (COMMON PORTS) \n3 - 1 to 65535 (FULL SCAN)\n")
+if int(ports) == 1:
+    options = f"-oG - -v --top-ports 30 scan_results"
+elif int(ports) == 2: 
+    options = f"-sV -sC -p1-1024 scan_results"
+elif int(ports) == 3:
+    options = f"-sV -sC -p1-65535 scan_results"
+else:
+    options = f"-sV -sC -p1-200 scan_results"
 
 nm.scan(IP, arguments=options)
 
@@ -23,4 +33,4 @@ for host in nm.all_hosts():
             if state['state'] == 'open':
                 print("Port: %s\tStatus: %-20s\tService: %-10s\tProduct: %s" % (port, Fore.GREEN + state['state'] + Style.RESET_ALL, state['name'], state['product']))
             else:
-                print("Port: %s\tStatus: %-20s\tService: %-10s\tProduct: %s" % (port, Fore.YELLOW + state['state'] + Style.RESET_ALL, state['name'], state['product']))
+                print("Port: %s\tStatus: %-20s\tService: %-10s\tProduct: %s" % (port, Fore.RED + state['state'] + Style.RESET_ALL, state['name'], state['product']))
