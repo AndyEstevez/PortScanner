@@ -1,5 +1,6 @@
 import nmap
 from colorama import Fore, Style
+import ipaddress
 
 nm = nmap.PortScanner()
 
@@ -8,16 +9,22 @@ print("WARNING: PORT SCANNING MAY VIOLATE ACCEPTABLE USE POLICIES ON NETWORKS YO
 print("USE ONLY ON NETWORKS YOU HAVE EXPLICIT PERMISSION TO SCAN")
 print("*"*85+ Style.RESET_ALL)
 
-IP = input("Enter IP to scan: ")
-ports = input("Select option to scan ports: \n1 - Top Ports \n2 - 1 to 1024 (COMMON PORTS) \n3 - 1 to 65535 (FULL SCAN)\n")
-if int(ports) == 1:
-    options = f"-oG - -v --top-ports 30 scan_results"
-elif int(ports) == 2: 
-    options = f"-sV -sC -p1-1024 scan_results"
-elif int(ports) == 3:
-    options = f"-sV -sC -p1-65535 scan_results"
-else:
-    options = f"-sV -sC -p1-200 scan_results"
+while True:
+    try:
+        IP = input("Enter IP to scan: ")
+        print(ipaddress.ip_address(IP))
+        ports = input("Select option to scan ports: \n1 - Top Ports \n2 - 1 to 1024 (COMMON PORTS) \n3 - 1 to 65535 (FULL SCAN)\n")
+        if int(ports) == 1:
+            options = f"-oG - -v --top-ports 30 scan_results"
+        elif int(ports) == 2: 
+            options = f"-sV -sC -p1-1024 scan_results"
+        elif int(ports) == 3:
+            options = f"-sV -sC -p1-65535 scan_results"
+        else:
+            options = f"-sV -sC -p1-200 scan_results"
+        break
+    except ValueError:
+        print("NOT VALID IP ADDRESS. Example - 127.0.0.1")
 
 nm.scan(IP, arguments=options)
 

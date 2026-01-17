@@ -2,7 +2,7 @@ import socket
 import asyncio
 import sys
 from colorama import Fore, Style
-
+import ipaddress
 import threading
 from concurrent.futures import ThreadPoolExecutor
 
@@ -54,6 +54,16 @@ def main():
     print("USE ONLY ON NETWORKS YOU HAVE EXPLICIT PERMISSION TO SCAN")
     print("*"*85+ Style.RESET_ALL)
     print("PORT SCANNER WILL SCAN FROM 1 to 1024")
+    while True:
+        try:
+            print("Enter IP to scan ports:")
+            IP = input()
+            print(ipaddress.ip_address(IP))
+            break
+
+        except ValueError:
+            print("NOT VALID IP ADDRESS. Example - 127.0.0.1")
+
     print("Enter IP to scan ports:")
     IP = input()
     print(f"IP Address: {IP}")
