@@ -29,8 +29,9 @@ for host in nm.all_hosts():
         ports = nm[host][protocol]
         print("-"*50)
         print(f"Listed ports on {IP}")
+        print("Port\t Status\t Service")
         for port, state in ports.items():
             if state['state'] == 'open':
-                print("Port: %s\tStatus: %-20s\tService: %-10s" % (port, Fore.GREEN + state['state'] + Style.RESET_ALL, state['name']))
+                print(Fore.GREEN + f"{port}\t", f"{state['state']}\t", f"{state['name']}" + Style.RESET_ALL)
             else:
-                print("Port: %s\tStatus: %-20s\tService: %-10s" % (port, Fore.RED + state['state'] + Style.RESET_ALL, state['name']))
+                print(Fore.RED + f"{port}\t", f"{state['state']}\t", f"{state['name']}" + Style.RESET_ALL)
